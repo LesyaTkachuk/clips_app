@@ -64,3 +64,5 @@ ngOnDestroy():void {
 this.modal.unregister('auth');
 }
 }
+
+- Forms: Reactive(harder to learn, scalable, conf in class) and Template (easier to lear, better for small forms, conf in template) Forms

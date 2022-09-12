@@ -66,3 +66,10 @@ this.modal.unregister('auth');
 }
 
 - Forms: Reactive(harder to learn, scalable, conf in class) and Template (easier to lear, better for small forms, conf in template) Forms
+- Two-way binding is the feature for being able to listen to event and update values simultaniously.
+  We can add property binding and event binding to ngModel simultaneously:
+  <input [(ngModel)]=''> replaces this syntax <input [value]='' (change)=''>
+
+"#" allows us to create variable in template, but it can be used only in template (not in component): #loginForm
+We can set it with the value of ngForm directive to get access to its properties: #loginForm='ngForm'
+We have to validate inputs by adding attributes, then NgModule directive will invert them to Validators

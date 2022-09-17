@@ -12,17 +12,29 @@
       <!-- Primary Navigation -->
       <ul class="flex flex-row mt-1">
         <!-- Navigation Links -->
-        <li>
+        <!-- we can add structural directive *ngIf for toggling the visibility of components. It works as if - else -->
+        <!-- so *ngIf directive will render components if condition is ture and will render component after else if condition is false -->
+        <!-- <li *ngIf="!isAuthenticated; else authLinks"> -->
+
+        <!-- we can subscribe to Observable inside template using async pipe, it accepts an Observable or Promise -->
+        <!--so, Angular will pass an Observable to the async pipe, behind the scenes the async pipe will subscribe to the observable.Emitted Value given by the observable will be given to the ngIf directive  -->
+        <li *ngIf="!(auth.isAuthenticated$ | async); else authLinks">
           <a class="px-2" href="#" (click)="openModal($event)"
             >Login / Register</a
           >
         </li>
-        <li>
-          <a class="px-2" href="#">Manage</a>
-        </li>
-        <li>
-          <a class="px-2" href="#">Upload</a>
-        </li>
+        <!-- we create a template and add reference variable to it -->
+        <ng-template #authLinks>
+          <li>
+            <a class="px-2" href="#">Manage</a>
+          </li>
+          <li>
+            <a class="px-2" href="#">Upload</a>
+          </li>
+          <li>
+            <a class="px-2" (click)="logout($event)">Logout</a>
+          </li>
+        </ng-template>
         <li>
           <a class="px-2" href="about.html">About</a>
         </li>

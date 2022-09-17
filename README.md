@@ -65,7 +65,10 @@ this.modal.unregister('auth');
 }
 }
 
-- Forms: Reactive(harder to learn, scalable, conf in class) and Template (easier to lear, better for small forms, conf in template) Forms
+# Forms
+
+Reactive(harder to learn, scalable, conf in class) and Template (easier to lear, better for small forms, conf in template) Forms
+
 - Two-way binding is the feature for being able to listen to event and update values simultaniously.
   We can add property binding and event binding to ngModel simultaneously:
   <input [(ngModel)]=''> replaces this syntax <input [value]='' (change)=''>
@@ -73,3 +76,29 @@ this.modal.unregister('auth');
 "#" allows us to create variable in template, but it can be used only in template (not in component): #loginForm
 We can set it with the value of ngForm directive to get access to its properties: #loginForm='ngForm'
 We have to validate inputs by adding attributes, then NgModule directive will invert them to Validators
+
+# Firebase
+
+Create a new project on Firebase page, add Firebase database. Add AngularFire package to your app
+ng add @angular/fire
+Each service of Firebase has its own module
+
+Authentification - unable authentification with email in your project
+import module into app.module and add service AngularFireAuth into constructor of register class component
+constructor(private auth: AngularFireAuth) {}
+this.auth.createUserWithEmailAndPassword({...})
+
+Storing data- we should add data to collection document, if collection doesn't exist Firebase will automatically create one with this name.
+db.collection('users').doc(userCred.user.uid).set({...})
+
+# Async pipe
+
+Async pipe is used to subscribe to the Observable inside the template.
+Async pipe accepts an Observable or Promise.
+Angular will pass an Observable to the async pipe, behind the scenes the async pipe will subscribe to the observable.
+
+ <li *ngIf="!(auth.isAuthenticated$ | async); else authLinks">
+
+# Custom Validators
+
+They can be a class or a function

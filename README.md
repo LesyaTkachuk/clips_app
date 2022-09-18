@@ -101,4 +101,8 @@ Angular will pass an Observable to the async pipe, behind the scenes the async p
 
 # Custom Validators
 
-They can be a class or a function
+They can be a class or a function. Custom validators can be asyncronous.
+We just have to add our custom validators functions into second argument of new Form group instance creation, which is an array of custom validator functions
+registerForm = new FormGroup(
+{ ...}, [RegisterValidators.match('password', 'confirm_password')]
+);

@@ -1,5 +1,9 @@
 <app-nav></app-nav>
 
+<!-- it is an Angular directive and acts as placeholder for our component -->
+<!-- Once the router has been initialized, this directive will load the component corresponding to the path -->
+<router-outlet></router-outlet>
+
 <app-auth-modal
   *ngIf="!(auth.isAuthenticatedWithDelay$ | async)"
 ></app-auth-modal>

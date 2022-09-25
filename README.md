@@ -38,6 +38,9 @@ npx init tailwind
 To create component inside module user:
 ng generate component user/auth-modal
 
+Will generate module with routing-module
+ng g module NameOfModule --routing
+
 To pass the desired content in this place:
 <ng-content select="[heading]"></ng-content>
 
@@ -106,3 +109,15 @@ We just have to add our custom validators functions into second argument of new 
 registerForm = new FormGroup(
 { ...}, [RegisterValidators.match('password', 'confirm_password')]
 );
+
+# Routing
+
+we have two functions for registering routing in our app RouterModule.forRoot(routes) register a service Router and RouterModule.forChild(routes)
+
+We can redirect user to different url using:
+
+- add routerLink directive to ancor element <a routerLink="/about" >
+- Router.navigateByUrl('/absolutePath') to redirect user programatically
+- uaing redirectTo propertyin routes configurations {path:'/learn-about', redirectTo: '/about'}
+
+We can use RoutingGuard to prevent our routes from non-authenticated users

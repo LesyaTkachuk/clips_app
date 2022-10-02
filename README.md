@@ -121,3 +121,15 @@ We can redirect user to different url using:
 - uaing redirectTo propertyin routes configurations {path:'/learn-about', redirectTo: '/about'}
 
 We can use RoutingGuard to prevent our routes from non-authenticated users
+
+# Uploading files
+
+We create EventBlocker directive to prevent default browser behaviour at some events (drop, dragOver)
+There is a wierd bug of Chrome that we can't see file in dataTransfer object in console. We have manually set the first item of event.dataTransfer.files to a variable file.
+
+MIME types - that is a label identifying the type of data in a file (audio/mp3, audio/ogg, application/msword, video/mp4)
+
+Logic connected with the file upload can be found in upload.component.ts and services/clip.ts
+
+Firebase reference - is an object that points to a location in your application, allows you to read/write references, create new references, so manage multiple locations (so we use references to upload a file to the storage and add data to the database)
+Firebase snapshot - is an object that is a copy of a location in your application, they are read only and immutable. They are memory efficient and makes app more lightweight. Snapshots are ussually returned whenever you are listened to changes to a reference, so when some event occur

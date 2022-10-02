@@ -23,3 +23,6 @@ firebase.auth().onAuthStateChanged(() => {
 
   appInit = true;
 });
+
+// const appCheck = firebase.appCheck();
+// appCheck.activate(environment.FIREBASE_APPCHECK_DEBUG_TOKEN, true);

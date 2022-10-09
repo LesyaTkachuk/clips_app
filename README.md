@@ -133,3 +133,8 @@ Logic connected with the file upload can be found in upload.component.ts and ser
 
 Firebase reference - is an object that points to a location in your application, allows you to read/write references, create new references, so manage multiple locations (so we use references to upload a file to the storage and add data to the database)
 Firebase snapshot - is an object that is a copy of a location in your application, they are read only and immutable. They are memory efficient and makes app more lightweight. Snapshots are ussually returned whenever you are listened to changes to a reference, so when some event occur
+
+# Behavior subject
+
+Behavior subject is a new type of observable. Normally we can subscribe to observable to wait for value pushed by the observable. Subscribers don't have the power to force the observable to push a new value. But behavior subject can push a value while being subscribed to an observable. We can create an object that acts like an observable and an observer.
+We will use it to handle sorting when getting users clips.

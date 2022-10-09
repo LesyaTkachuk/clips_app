@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 // ActivatedRoute class is a service injected into our component to gather information about the route the user is currently on
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ClipService } from 'src/app/services/clip.service';
+import IClip from 'src/app/models/clip.model';
+import { ModalService } from 'src/app/services/modal.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-manage',
@@ -9,12 +13,33 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class ManageComponent implements OnInit {
   videoOrder = '1';
+  clips: IClip[] = [];
+  activeClip: IClip | null = null;
+  // $ is appended to indentify an observable
+  sort$: BehaviorSubject<string>;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private clipService: ClipService,
+    private modal: ModalService
+  ) {
+    // we instantiate Behavior subject class. We set the sort property to a new instance of the BehaviorSubject class. We will pass an initial value as this.videoOder to push by the observable
+    this.sort$ = new BehaviorSubject(this.videoOrder);
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((qParams: Params) => {
       this.videoOrder = qParams.sort === '2' ? qParams.sort : '1';
+    });
+    this.clipService.getUserClips().subscribe((docs) => {
+      this.clips = [];
+      docs.forEach((doc) => {
+        this.clips.push({
+          docID: doc.id,
+          ...doc.data(),
+        });
+      });
     });
   }
 
@@ -28,5 +53,31 @@ export class ManageComponent implements OnInit {
         sort: value,
       },
     });
+  }
+
+  openModal($event: Event, clip: IClip) {
+    $event.preventDefault();
+
+    this.activeClip = clip;
+
+    this.modal.toggleModal('editClip');
+  }
+
+  // we create update method which accepts one $event argument, that will be the data emitted by the child components
+  update($event: IClip) {
+    this.clips.forEach((element, index) => {
+      if (element.docID === $event.docID) {
+        this.clips[index].title = $event.title;
+      }
+    });
+  }
+
+  deleteClip($event: Event, clip: IClip) {
+    $event.preventDefault();
+
+    this.clipService.deleteClip(clip);
+
+    //  to delete clip from the page
+    this.clips = this.clips.filter((element) => element.docID !== clip.docID);
   }
 }

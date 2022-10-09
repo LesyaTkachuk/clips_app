@@ -138,3 +138,7 @@ Firebase snapshot - is an object that is a copy of a location in your applicatio
 
 Behavior subject is a new type of observable. Normally we can subscribe to observable to wait for value pushed by the observable. Subscribers don't have the power to force the observable to push a new value. But behavior subject can push a value while being subscribed to an observable. We can create an object that acts like an observable and an observer.
 We will use it to handle sorting when getting users clips.
+
+# Composite indexes
+
+Helps the database sort through data by multiple fields. You can think of an index as a table of contents for your data. We have to create composite indexes in Indexes section of Firebase Database.

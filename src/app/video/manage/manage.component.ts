@@ -31,8 +31,12 @@ export class ManageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((qParams: Params) => {
       this.videoOrder = qParams.sort === '2' ? qParams.sort : '1';
+
+      // we have to push the selected order whenever user changes the order with the help of next method of our sort observable
+      this.sort$.next(this.videoOrder);
     });
-    this.clipService.getUserClips().subscribe((docs) => {
+    // we subscribe to getUserClips observable and pass sort subjectinto it as an argument
+    this.clipService.getUserClips(this.sort$).subscribe((docs) => {
       this.clips = [];
       docs.forEach((doc) => {
         this.clips.push({

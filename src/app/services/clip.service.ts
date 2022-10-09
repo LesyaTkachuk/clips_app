@@ -7,7 +7,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { switchMap, of, map } from 'rxjs';
+import { switchMap, of, map, BehaviorSubject, combineLatest } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
@@ -28,14 +28,22 @@ export class ClipService {
     return this.clipsCollection.add(data);
   }
 
-  getUserClips() {
-    return this.auth.user.pipe(
-      switchMap((user) => {
+  // combineLatest operator helps us to subscribe to multiple observables at the same time.
+  // Whenever either observable pushes the value, the combined latest operator will push the value onto the pipeline,along with the new value, values fron the other observables will get pushed too.
+  // the values will be the latest values from the other observables, therefor, will receive values from each observables
+  getUserClips(sort$: BehaviorSubject<string>) {
+    return combineLatest([this.auth.user, sort$]).pipe(
+      switchMap((values) => {
+        const [user, sort] = values;
+
         if (!user) {
           return of([]);
         }
 
-        const query = this.clipsCollection.ref.where('uid', '==', user.uid);
+        // orderBy function will sort an array
+        const query = this.clipsCollection.ref
+          .where('uid', '==', user.uid)
+          .orderBy('timestamp', sort === '1' ? 'desc' : 'asc');
 
         return query.get();
       }),

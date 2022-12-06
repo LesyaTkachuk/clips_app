@@ -59,9 +59,11 @@ export class ClipService {
   async deleteClip(clip: IClip) {
     // if we want to interact with the file in the storage we should create a reference, that is the object that points to a specific file
     const clipRef = this.storage.ref(`clips/${clip.fileName}`);
+    const screenshotRef = this.storage.ref(`screenshots/${clip.screenshotFileName}`)
 
-    // to delete file from the storage
+    // to delete file and screenshot from the storage
     await clipRef.delete();
+    await screenshotRef.delete();
 
     // to delete document from database
     await this.clipsCollection.doc(clip.docID).delete();

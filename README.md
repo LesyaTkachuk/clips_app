@@ -38,11 +38,22 @@ npx init tailwind
 To create component inside module user:
 ng generate component user/auth-modal
 
-Will generate module with routing-module
+Will generate module with routing-module:
 ng g module NameOfModule --routing
 
 To pass the desired content in this place:
 <ng-content select="[heading]"></ng-content>
+
+To create dynamic class:
+<button
+[disabled]="isSubmitting"
+[ngClass]="{
+'opacity-50': isSubmitting,
+'hover:bg-indigo-700': !isSubmitting
+}"
+class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none" >
+Publish
+</button>
 
 Services are used to manage data between different components. They are used to store global data in them. Ussualy are placed in app directory
 

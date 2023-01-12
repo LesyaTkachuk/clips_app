@@ -44,7 +44,7 @@ ng g module NameOfModule --routing
 To pass the desired content in this place:
 <ng-content select="[heading]"></ng-content>
 
-To create dynamic class:
+To create dynamic class bind ngClass directive to the object of css properties:
 <button
 [disabled]="isSubmitting"
 [ngClass]="{

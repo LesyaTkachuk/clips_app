@@ -15,6 +15,8 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 })
 export class ClipService {
   public clipsCollection: AngularFirestoreCollection<IClip>;
+  pageClips: IClip[] = [];
+  pendingRequest = false;
 
   constructor(
     private db: AngularFirestore,
@@ -59,7 +61,9 @@ export class ClipService {
   async deleteClip(clip: IClip) {
     // if we want to interact with the file in the storage we should create a reference, that is the object that points to a specific file
     const clipRef = this.storage.ref(`clips/${clip.fileName}`);
-    const screenshotRef = this.storage.ref(`screenshots/${clip.screenshotFileName}`)
+    const screenshotRef = this.storage.ref(
+      `screenshots/${clip.screenshotFileName}`
+    );
 
     // to delete file and screenshot from the storage
     await clipRef.delete();
@@ -67,5 +71,37 @@ export class ClipService {
 
     // to delete document from database
     await this.clipsCollection.doc(clip.docID).delete();
+  }
+
+  async getClips() {
+    if (this.pendingRequest) {
+      return;
+    }
+
+    this.pendingRequest = true;
+    let query = this.clipsCollection.ref.orderBy('timestamp', 'desc').limit(6);
+
+    const { length } = this.pageClips;
+
+    if (length) {
+      const lastDocID = this.pageClips[length - 1].docID;
+      const lastDoc = await this.clipsCollection
+        .doc(lastDocID)
+        .get()
+        .toPromise();
+
+      query = query.startAfter(lastDoc);
+    }
+
+const snapshot = await query.get();
+
+snapshot.forEach(doc=>{
+  this.pageClips.push({
+    docID: doc.id,
+    ...doc.data()
+  })
+})
+
+    this.pendingRequest = false;
   }
 }

@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ClipComponent } from './clip/clip.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ClipService } from './services/clip.service';
 
 // this array will contain a list of objects with configurations setting for each route
 const routes: Routes = [
@@ -19,6 +20,17 @@ const routes: Routes = [
   {
     path: 'clip/:id',
     component: ClipComponent,
+    // Angular will search for a function called resolve in our service and if it is available, this function will be called whenever the user visits this route
+    // the data returned by this function can be accessed through the property name in this object
+    resolve: {
+      clip: ClipService,
+    },
+  },
+  {
+    path: '',
+    // add lazy loading of video module to increase performance
+    loadChildren: async () =>
+      (await import('./video/video.module')).VideoModule,
   },
   {
     path: '**',
